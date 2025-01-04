@@ -6,23 +6,18 @@ app = Flask(__name__)
 BOT_TOKEN = "7896861090:AAE_KmXaUjib9KrDJ2ESivy8TWmw8xH5T_o"
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
-# Роут для главной страницы
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 # Роут для обработки данных от мини-приложения
 @app.route("/send-data", methods=["POST"])
 def send_data():
     data = request.json
     user_message = data.get("message", "")
+    chat_id = data.get("chat_id")  # Получаем chat_id из запроса
 
     # Отправляем сообщение боту
-    chat_id = "123456789"  # Вставь сюда ID чата или сделай динамическим
     url = TELEGRAM_API_URL + "sendMessage"
     payload = {
         "chat_id": chat_id,
-        "text": f"Новое сообщение из мини-приложения: {user_message}"
+        "text": f"Новое сообщение: {user_message}"
     }
     response = requests.post(url, json=payload)
 
