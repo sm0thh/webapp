@@ -6,6 +6,25 @@ app = Flask(__name__)
 BOT_TOKEN = "7896861090:AAE_KmXaUjib9KrDJ2ESivy8TWmw8xH5T_o"
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
+def start(update, context):
+    keyboard = [
+        [InlineKeyboardButton("Открыть мини-приложение", url="https://example.com/myapp")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text("Привет! Нажми кнопку ниже, чтобы открыть мини-приложение.", reply_markup=reply_markup)
+
+def main():
+    updater = Updater(BOT_TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
+
+    dispatcher.add_handler(CommandHandler("start", start))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
+
 # Роут для обработки данных от мини-приложения
 @app.route("/send-data", methods=["POST"])
 def send_data():
