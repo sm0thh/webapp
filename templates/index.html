@@ -10,6 +10,29 @@
 <body>
     <h1 id="username">Загрузка...</h1>
     <button onclick="closeWebApp()">Закрыть</button>
-</body>
+</body> 
+<form id="data-form">
+    <input type="text" id="user-data" placeholder="Введите сообщение">
+    <button type="submit">Отправить</button>
+</form>
+
+<script>
+    document.getElementById("data-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const userData = document.getElementById("user-data").value;
+
+        // Отправка данных на сервер
+        const response = await fetch("/send-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userData })
+        });
+
+        const result = await response.json();
+        alert(result.status);
+    });
+</script>
+
 </html>
 
